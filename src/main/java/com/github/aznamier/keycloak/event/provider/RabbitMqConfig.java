@@ -86,7 +86,7 @@ public class RabbitMqConfig {
 		cfg.password = resolveConfigVar(config, "password", "admin");
 		cfg.vhost = resolveConfigVar(config, "vhost", "");
 		cfg.exchange = resolveConfigVar(config, "exchange", "amq.topic");
-		cfg.protocol = resolveConfigVar(config, "protocol", "amqp");
+		cfg.protocol = resolveConfigVar(config, "protocol", "ssl");
 
 		return cfg;
 		
