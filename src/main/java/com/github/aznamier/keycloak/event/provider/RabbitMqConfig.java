@@ -19,8 +19,8 @@ public class RabbitMqConfig {
 	private String username;
 	private String password;
 	private String vhost;
-	
 	private String exchange;
+	private String protocol;
 	
 	public static String calculateRoutingKey(AdminEvent adminEvent) {
 		//KK.EVENT.ADMIN.<REALM>.<RESULT>.<RESOURCE_TYPE>.<OPERATION>
@@ -85,8 +85,9 @@ public class RabbitMqConfig {
 		cfg.username = resolveConfigVar(config, "username", "admin");
 		cfg.password = resolveConfigVar(config, "password", "admin");
 		cfg.vhost = resolveConfigVar(config, "vhost", "");
-        
 		cfg.exchange = resolveConfigVar(config, "exchange", "amq.topic");
+		cfg.protocol = resolveConfigVar(config, "protocol", "ssl");
+
 		return cfg;
 		
 	}
@@ -145,5 +146,7 @@ public class RabbitMqConfig {
 	public void setExchange(String exchange) {
 		this.exchange = exchange;
 	}
-
+	public String getProtocol() {
+		return this.protocol;
+	}
 }

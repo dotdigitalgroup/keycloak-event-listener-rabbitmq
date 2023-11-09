@@ -1,7 +1,11 @@
 package com.github.aznamier.keycloak.event.provider;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.net.ssl.SSLContext;
 
 import org.keycloak.events.Event;
 import org.keycloak.events.EventListenerProvider;
@@ -35,10 +39,20 @@ public class RabbitMqEventListenerProvider implements EventListenerProvider {
 		this.factory.setVirtualHost(cfg.getVhost());
 		this.factory.setHost(cfg.getHostUrl());
 		this.factory.setPort(cfg.getPort());
+		try {
+			System.out.println("keycloak-to-rabbitmq ||: Protocol from context" + SSLContext.getDefault());
+			System.out.println("keycloak-to-rabbitmq ||: Config " + cfg.getProtocol());
+			if (cfg.getProtocol().equals("ssl")) {
+				System.out.println("keycloak-to-rabbitmq || Using SSL: " + SSLContext.getDefault());
+				this.factory.useSslProtocol(SSLContext.getDefault());
+			}
+		} catch (NoSuchAlgorithmException e) {
+			System.err.println("keycloak-to-rabbitmq ERROR Connecting: Algorithm = " + cfg.getProtocol());
+			e.printStackTrace();
+		}
 		
 		this.session = session;
 		this.session.getTransactionManager().enlistAfterCompletion(tx);
-		
 	}
 
 	@Override
